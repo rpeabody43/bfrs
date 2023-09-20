@@ -31,7 +31,7 @@ fn err(msg: String, runtime: bool) {
     let total_msg = format!(
         "{}{}: {}",
         if runtime { "Runtime " } else { "" },
-        "Err: ",
+        "Err",
         msg
     );
     println!("🟥 {}", total_msg.red());
