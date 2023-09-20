@@ -1,29 +1,38 @@
 mod bf;
 
-use clap::Parser;
-use std::io::{BufRead, BufReader};
-use std::fs::File;
+use colored::Colorize;
+use std::env;
+use std::fs;
 
-#[derive(Parser)]
-struct Cli {
-    filepath: std::path::PathBuf,
-}
-
-fn main(){
-    // let args = Cli::parse();
-    // let file = File::open(args.filepath)?;
-    // let mut reader = BufReader::new(file);
-    //
-    // for line in reader.lines()? {
-    //
-    // }
+fn main() {
     let mut instance = bf::Instance::new();
-    let test_str = ">>++[<+++++>-]<+[<++++++>-]<.>>+++[<+++>-]<[<+++++>-]<.++++.+.-----.-.>>+++[<++++>-]<+[<------>-]<.>>+++[<++++>-]<+[<++++++>-]+++[<+++>-]<.>++++[<------>-]<++.>+++++[<++>-]<.>+++[<-->-]<.>>++[<+++++>-]<[<------->-]<+.>>++++[<++++>-]<+[<+++++>-]<.-----.";
-    let output = match instance.interpret_to_ascii(test_str) {
+    let args: Vec<String> = env::args().collect();
+
+    let file_path = &args[1];
+    let contents: String = match fs::read_to_string(file_path) {
         Ok(x) => x,
-        Err(e) => panic!("{}", e)
+        Err(e) => {
+            err(format!("FnF: {}", e), false);
+            return;
+        }
+    };
+
+    let output = match instance.interpret_to_ascii(&contents) {
+        Ok(x) => x,
+        Err(e) => {
+            err(e, true);
+            return;
+        }
     };
     println!("{}", output);
 }
 
-
+fn err(msg: String, runtime: bool) {
+    let total_msg = format!(
+        "{}{}: {}",
+        if runtime { "Runtime " } else { "" },
+        "Err: ",
+        msg
+    );
+    println!("🟥 {}", total_msg.red());
+}

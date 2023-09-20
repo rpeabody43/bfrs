@@ -43,53 +43,65 @@ impl Instance {
         Ok(())
     }
 
+    fn enter_loop (&mut self, idx: &mut usize, chars: &Vec<char>) -> Result<(), String> {
+        if self.arr[self.pointer] == 0 {
+            // Skip over the loop
+            let mut temp = 1;
+            while temp > 0 {
+                if *idx >= chars.len() - 1 {
+                    return Err(String::from("Loop was never closed")); 
+                }
+                *idx += 1;
+                if chars[*idx] == ']' { temp -= 1; }
+                else if chars[*idx] == '[' {temp += 1; }
+            }
+        }
+        Ok(())
+    }
+
+    fn exit_loop (&mut self, idx: &mut usize, chars: &Vec<char>) -> Result<(), String> {
+        if self.arr[self.pointer] != 0 {
+            // Find where the loop started
+            let mut temp = 1;
+            while temp > 0 {
+                if *idx == 0 {
+                    return Err(String::from("Empty loop close statement")); 
+                }
+                *idx -= 1;
+                if chars[*idx] == ']' { temp += 1; }
+                else if chars[*idx] == '[' { temp -= 1; }
+            }
+        }
+        Ok(())
+    }
+
     fn out (&self) -> u8 {
         self.arr[self.pointer]
     }
 
-    pub fn interpret_to_vec (&mut self, val: &str) -> Result<Vec<u8>, String> {
+    pub fn interpret_to_vec (&mut self, val: &String) -> Result<Vec<u8>, String> {
         let mut ret: Vec<u8> = Vec::new();
         let chars: Vec<char> = val.chars().collect();
 
-        let mut idx: usize = 0;
-        while idx < chars.len() {
-            match chars[idx] {
+        let mut parsing_idx: usize = 0;
+        while parsing_idx < chars.len() {
+            match chars[parsing_idx] {
                 '+' => self.inc()?,
                 '-' => self.dec()?,
                 '>' => self.move_right()?,
                 '<' => self.move_left()?,
                 '.' => ret.push(self.out()),
-                '[' => {
-                    if self.arr[self.pointer] == 0 {
-                        let mut temp = 1;
-                        while temp > 0 {
-                            if idx >= chars.len() - 1 { return Err(String::from("Loop was never closed")); }
-                            idx += 1;
-                            if chars[idx] == ']' { temp -= 1; }
-                            else if chars[idx] == '[' {temp += 1; }
-                        }
-                    }
-                },
-                ']' => {
-                    if self.arr[self.pointer] != 0 {
-                        let mut temp = 1;
-                        while temp > 0 {
-                            if idx <= 0 { return Err(String::from("Empty loop close statement")); }
-                            idx -= 1;
-                            if chars[idx] == ']' { temp += 1; }
-                            else if chars[idx] == '[' {temp -= 1; }
-                        }
-                    }
-                }
+                '[' => self.enter_loop(&mut parsing_idx, &chars)?,
+                ']' => self.exit_loop(&mut parsing_idx, &chars)?,
                 _ => {}
             }
-            idx += 1;
+            parsing_idx += 1;
         }
 
         Ok(ret)
     }
 
-    pub fn interpret_to_ascii(&mut self, val: &str) -> Result<String, String> {
+    pub fn interpret_to_ascii (&mut self, val: &String) -> Result<String, String> {
         let vec = self.interpret_to_vec(val)?;
         let mut ret = String::new();
         for c in vec {
