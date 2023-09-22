@@ -1,6 +1,7 @@
 pub struct Instance {
     arr: [u8; 30_000],
     pointer: usize,
+    out: Vec<u8>
 }
 
 impl Instance {
@@ -8,6 +9,7 @@ impl Instance {
         Self {
             arr: [0_u8; 30_000],
             pointer: 0,
+            out: Vec::new() 
         }
     }
 
@@ -79,7 +81,13 @@ impl Instance {
         self.arr[self.pointer]
     }
 
-    pub fn interpret_to_vec (&mut self, val: &String) -> Result<Vec<u8>, String> {
+    pub fn update (&mut self, val: &String) -> Result<(), String> {
+        let mut new: Vec<u8> = self.interpret_to_vec(val)?;
+        self.out.append(&mut new);
+        Ok(())
+    }
+
+    fn interpret_to_vec (&mut self, val: &String) -> Result<Vec<u8>, String> {
         let mut ret: Vec<u8> = Vec::new();
         let chars: Vec<char> = val.chars().collect();
 
@@ -101,13 +109,12 @@ impl Instance {
         Ok(ret)
     }
 
-    pub fn interpret_to_ascii (&mut self, val: &String) -> Result<String, String> {
-        let vec = self.interpret_to_vec(val)?;
+    pub fn get_ascii (&mut self) -> String {
         let mut ret = String::new();
-        for c in vec {
-            ret.push(c as char);
+        for c in &self.out {
+            ret.push(*c as char);
         }
-        Ok(ret)
+        ret
     }
 }
 

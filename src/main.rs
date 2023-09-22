@@ -1,14 +1,24 @@
 mod bf;
+mod interpreter;
 
 use colored::Colorize;
 use std::env;
 use std::fs;
 
 fn main() {
-    let mut instance = bf::Instance::new();
     let args: Vec<String> = env::args().collect();
 
-    let file_path = &args[1];
+    if args.len() > 1 {
+        let file_path = &args[1];
+        read_from_file(file_path);
+    } else {
+        interpreter::session();
+    }
+}
+
+fn read_from_file(file_path: &String) {
+    let mut instance = bf::Instance::new();
+
     let contents: String = match fs::read_to_string(file_path) {
         Ok(x) => x,
         Err(e) => {
@@ -17,17 +27,19 @@ fn main() {
         }
     };
 
-    let output = match instance.interpret_to_ascii(&contents) {
-        Ok(x) => x,
+    match instance.update(&contents) {
+        Ok(()) => {},
         Err(e) => {
             err(e, true);
             return;
         }
     };
+    
+    let output = instance.get_ascii();
     println!("{}", output);
 }
 
-fn err(msg: String, runtime: bool) {
+pub fn err(msg: String, runtime: bool) {
     let total_msg = format!(
         "{}{}: {}",
         if runtime { "Runtime " } else { "" },
