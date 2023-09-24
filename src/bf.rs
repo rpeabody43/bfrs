@@ -116,5 +116,13 @@ impl Instance {
         }
         ret
     }
+
+    pub fn at (&self, idx: usize) -> &u8 {
+        &self.arr[idx]
+    }
+
+    pub fn pointer (&self) -> &usize {
+        &self.pointer
+    }
 }
 
