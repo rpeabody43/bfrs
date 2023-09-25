@@ -2,6 +2,8 @@ pub struct Instance {
     arr: [u8; 30_000],
     pointer: usize,
     out: Vec<u8>,
+    input: Option<Vec<char>>,
+    input_idx: usize,
 }
 
 impl Instance {
@@ -10,6 +12,28 @@ impl Instance {
             arr: [0_u8; 30_000],
             pointer: 0,
             out: Vec::new(),
+            input: None,
+            input_idx: 0,
+        }
+    }
+
+    pub fn set_input(&mut self, input_str: &str) {
+        let chars = input_str.chars().collect();
+        self.input = Some(chars);
+    }
+
+    fn read_input(&mut self) -> Result<(), String> {
+        match &mut self.input {
+            None => Err(String::from("No input defined")),
+            Some(ref mut input) => {
+                if self.input_idx < input.len() {
+                    self.arr[self.pointer] = input[self.input_idx] as u8;
+                    self.input_idx += 1;
+                    Ok(())
+                } else {
+                    Err(String::from("Reached end of input"))
+                }
+            }
         }
     }
 
@@ -105,6 +129,7 @@ impl Instance {
                 '>' => self.move_right()?,
                 '<' => self.move_left()?,
                 '.' => ret.push(self.out()),
+                ',' => self.read_input()?,
                 '[' => self.enter_loop(&mut parsing_idx, &chars)?,
                 ']' => self.exit_loop(&mut parsing_idx, &chars)?,
                 _ => {}

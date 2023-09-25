@@ -10,14 +10,21 @@ fn main() {
 
     if args.len() > 1 {
         let file_path = &args[1];
-        read_from_file(file_path);
+        let input: Option<&String> = match args.len() > 2 {
+            true => Some(&args[2]),
+            false => None
+        };
+        read_from_file(file_path, input);
     } else {
         interpreter::session();
     }
 }
 
-fn read_from_file(file_path: &String) {
+fn read_from_file(file_path: &String, input: Option<&String>) {
     let mut instance = bf::Instance::new();
+    if let Some(input_str) = input {
+        instance.set_input(input_str)
+    }
 
     let contents: String = match fs::read_to_string(file_path) {
         Ok(x) => x,

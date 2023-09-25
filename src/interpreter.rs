@@ -8,10 +8,8 @@ pub fn session() {
     let mut instance = bf::Instance::new();
     println!("-- BFRS Interpreter --");
     loop {
-        print!(">>> ");
-        let _ = stdout().flush();
-        let input = read_input();
-        match input.as_str().trim() {
+        let input = read_input(">>> ");
+        match input.trim().to_lowercase().as_str() {
             "exit" => return,
             "out" => {
                 let output = instance.get_ascii();
@@ -19,6 +17,10 @@ pub fn session() {
             }
             "new" => {
                 instance = bf::Instance::new();
+            }
+            "input" => {
+                let input_str = read_input("ENTER INPUT STRING: ");
+                instance.set_input(&input_str);
             }
             "view" => preview(&instance),
             _ => match instance.update(&input) {
@@ -31,7 +33,9 @@ pub fn session() {
     }
 }
 
-fn read_input() -> String {
+fn read_input(msg: &'static str) -> String {
+    print!("{}", msg);
+    let _ = stdout().flush();
     let mut input = String::new();
     stdin()
         .read_line(&mut input)
