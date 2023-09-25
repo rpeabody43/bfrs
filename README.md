@@ -9,13 +9,13 @@
 +.------------.>++++++[<+++++++++>-]<+.<.+++.------.--------.>>>++++[<++++++++>-
 ]<+.
 ```
-```bash
+```
 $ bfrs test.bf
 Hello, World!
 ```
 
 To pass some input along with it:
-```bash
+```
 $ bfrs test.bf INPUT
 ```
 Example of program that intakes two letters and prints them:
@@ -23,13 +23,13 @@ Example of program that intakes two letters and prints them:
 //test.bf
 ++[>,.<-]
 ```
-```bash
+```
 $ bfrs test.bf HI
 HI
 ```
 
 ### Using the Interpreter
-```bash
+```
 $ bfrs
 >> bfrs interpreter <<
 >>> TYPE COMMANDS HERE
