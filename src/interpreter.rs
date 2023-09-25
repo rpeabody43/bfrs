@@ -6,7 +6,7 @@ use std::io::{stdin, stdout, Write};
 
 pub fn session() {
     let mut instance = bf::Instance::new();
-    println!("-- BFRS Interpreter --");
+    println!(">> bfrs interpreter <<");
     loop {
         let input = read_input(">>> ");
         match input.trim().to_lowercase().as_str() {
