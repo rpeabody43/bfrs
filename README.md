@@ -60,4 +60,5 @@ ENTER INPUT STRING: HI
 HI
 ```
 **NEW:** Discard the current array/input and start fresh
+
 **EXIT:** Exit the interpreter
