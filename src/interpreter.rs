@@ -46,11 +46,16 @@ fn read_input(msg: &'static str) -> String {
 fn preview(instance: &bf::Instance) {
     let pointer = *instance.pointer();
 
+    let mut dot_before = false;
+    let mut dot_after = true;
+
     let mut ret = String::new();
     let offset;
-    if pointer > 29995 {
+    if pointer >= 29995 {
+        dot_after = false;
         offset = 29995;
     } else if pointer > 5 {
+        dot_before = true;
         offset = pointer - 5;
     } else {
         offset = 0;
@@ -66,5 +71,10 @@ fn preview(instance: &bf::Instance) {
         }
         ret.push_str(&wrapped_idx);
     }
-    println!("{}", ret);
+    println!(
+        "{}{}{}",
+        if dot_before { "..." } else { "" },
+        ret,
+        if dot_after { "..." } else { "" }
+    );
 }
