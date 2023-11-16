@@ -1,8 +1,8 @@
 # bfrs
-### A command-line [brainf#%&](https://en.wikipedia.org/wiki/Brainfuck) interpreter
+### A command-line [brainf***](https://esolangs.org/wiki/Brainfuck) interpreter
 
 ## USAGE
-### To Pass a brainf#%& File:
+### To Pass a brainf*** File:
 ```brainfuck
 //test.bf
 >++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<+
@@ -35,7 +35,7 @@ $ bfrs
 >>> TYPE COMMANDS HERE
 ```
 
-Unlike normal brainf#%&, alphanumerics aren't completely ignored here.
+Unlike normal brainf***, alphanumerics aren't completely ignored here.
 Instead, there's a set of commands for the interpreter.
 Anything not exactly matching these commands will be ignored like normal.
 
