@@ -1,5 +1,5 @@
 # bfrs
-### A command-line [brainf***](https://esolangs.org/wiki/Brainfuck) interpreter and REPL.
+### A command-line [brainf***](https://esolangs.org/wiki/Brainfuck) interpreter and REPL
 
 ## USAGE
 ### To Interpret a brainf*** File:
