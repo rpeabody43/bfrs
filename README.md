@@ -1,8 +1,8 @@
 # bfrs
-### A command-line [brainf***](https://esolangs.org/wiki/Brainfuck) interpreter
+### A command-line [brainf***](https://esolangs.org/wiki/Brainfuck) interpreter and REPL.
 
 ## USAGE
-### To Pass a brainf*** File:
+### To Interpret a brainf*** File:
 ```brainfuck
 //test.bf
 >++++++++[<+++++++++>-]<.>++++[<+++++++>-]<+.+++++++..+++.>>++++++[<+++++++>-]<+
@@ -28,7 +28,7 @@ $ bfrs test.bf HI
 HI
 ```
 
-### Using the Interpreter
+### Using the REPL
 ```
 $ bfrs
 >> bfrs interpreter <<
@@ -36,7 +36,7 @@ $ bfrs
 ```
 
 Unlike normal brainf***, alphanumerics aren't completely ignored here.
-Instead, there's a set of commands for the interpreter.
+Instead, there's a set of commands for the REPL.
 Anything not exactly matching these commands will be ignored like normal.
 
 **OUT:** View the current ASCII output
@@ -61,4 +61,4 @@ HI
 ```
 **NEW:** Discard the current array/input and start fresh
 
-**EXIT:** Exit the interpreter
+**EXIT:** Exit the REPL
